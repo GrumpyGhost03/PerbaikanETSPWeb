@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>duplikat antara news</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+        }
+
+        .btn-lihat-selengkapnya {
+            font-size: 14px;
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-logo" href="#">
+            <img src="https://www.antaranews.com/img/antaranews.com.png" alt="ANTARA News Logo" height="30">
+        </a>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <span class="navbar-text font-weight-bold" style="font-size: 18px; color: red;">
+                        Politik - ANTARA News
+                    </span>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="#" style="font-size: 15px; color: rgb(83, 83, 83);">Berita Terkini dan Terpercaya Indonesia</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row" id="politikList">
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const apiUrl = 'https://api-berita-indonesia.vercel.app/antara/politik/';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const politikData = data.data;
+                const posts = politikData.posts;
+
+                const politikListContainer = document.getElementById('politikList');
+
+                posts.forEach(post => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'col-md-4 mb-4 custom-shadow'; // Add custom shadow class
+
+                    postDiv.innerHTML = `
+                        <div class="card">
+                            <img src="${post.thumbnail}" class="card-img-top" alt="Post Thumbnail">
+                            <div class="card-body">
+                                <h5 class="card-title">${post.title}</h5>
+                                <p class="card-text">${post.description}</p>
+                                <a href="${post.link}" class="btn btn-danger btn-lihat-selengkapnya">Lihat Selengkapnya</a>
+                            </div>
+                        </div>
+                    `;
+
+                    politikListContainer.appendChild(postDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
